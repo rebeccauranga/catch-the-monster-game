@@ -10,6 +10,7 @@ def main():
     pygame.display.set_caption('Catch The Monster!')
     clock = pygame.time.Clock()
     background_image = pygame.image.load('images/background.png').convert_alpha()
+    hero_image = pygame.image.load('images/hero.png').convert_alpha()
 
     # Game initialization
 
@@ -31,6 +32,7 @@ def main():
         # Game display
 
         screen.blit(background_image, (0,0))
+        screen.blit(hero_image, (250,235))
         pygame.display.update()
         clock.tick(60)
 

@@ -5,6 +5,9 @@ def main():
     height = 480
     blue_color = (97, 159, 182)
 
+    monster_x = 0
+    monster_y = 0
+
     pygame.init()
     screen = pygame.display.set_mode((width, height))
     pygame.display.set_caption('Catch The Monster!')
@@ -13,12 +16,13 @@ def main():
     hero_image = pygame.image.load('images/hero.png').convert_alpha()
     monster_image = pygame.image.load('images/monster.png').convert_alpha()
 
+
     # Game initialization
 
     stop_game = False
     while not stop_game:
         for event in pygame.event.get():
-
+    
             # Event handling
 
             if event.type == pygame.QUIT:
@@ -26,6 +30,7 @@ def main():
 
 
         # Game logic
+        monster_x += 5
 
         # Draw background
         screen.fill(blue_color)
@@ -34,7 +39,7 @@ def main():
 
         screen.blit(background_image, (0,0))
         screen.blit(hero_image, (250,235))
-        screen.blit(monster_image, (100, 100))
+        screen.blit(monster_image, (monster_x, monster_y))
         pygame.display.update()
         clock.tick(60)
 

@@ -5,8 +5,8 @@ def main():
     height = 480
     blue_color = (97, 159, 182)
 
-    monster_x = 0
-    monster_y = 0
+    monster_x = 100
+    monster_y = 100
 
     pygame.init()
     screen = pygame.display.set_mode((width, height))
@@ -31,9 +31,18 @@ def main():
 
         # Game logic
         monster_x += 5
+        monster_y += 5
+        monster_x -= 5
+        monster_y -= 5
 
         if monster_x > width:
-            monster_x = -monster_x
+            monster_x = 0
+        elif monster_y > height:
+            monster_y = 0
+        elif monster_x < 0:
+            monster_x = width
+        elif monster_y < 0:
+            monster_y = width
 
         # Draw background
         screen.fill(blue_color)

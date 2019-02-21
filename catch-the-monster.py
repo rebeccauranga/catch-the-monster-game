@@ -11,6 +11,7 @@ def main():
     clock = pygame.time.Clock()
     background_image = pygame.image.load('images/background.png').convert_alpha()
     hero_image = pygame.image.load('images/hero.png').convert_alpha()
+    monster_image = pygame.image.load('images/monster.png').convert_alpha()
 
     # Game initialization
 
@@ -33,6 +34,7 @@ def main():
 
         screen.blit(background_image, (0,0))
         screen.blit(hero_image, (250,235))
+        screen.blit(monster_image, (100, 100))
         pygame.display.update()
         clock.tick(60)
 

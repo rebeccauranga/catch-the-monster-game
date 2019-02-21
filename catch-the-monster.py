@@ -1,14 +1,15 @@
 import pygame
 
 def main():
-    width = 500
-    height = 500
+    width = 512
+    height = 480
     blue_color = (97, 159, 182)
 
     pygame.init()
     screen = pygame.display.set_mode((width, height))
-    pygame.display.set_caption('My Game')
+    pygame.display.set_caption('Catch The Monster!')
     clock = pygame.time.Clock()
+    background_image = pygame.image.load('images/background.png').convert_alpha()
 
     # Game initialization
 
@@ -29,6 +30,7 @@ def main():
 
         # Game display
 
+        screen.blit(background_image, (0,0))
         pygame.display.update()
         clock.tick(60)
 

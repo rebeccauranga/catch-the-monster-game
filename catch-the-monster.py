@@ -32,6 +32,9 @@ def main():
         # Game logic
         monster_x += 5
 
+        if monster_x > width:
+            monster_x = -monster_x
+
         # Draw background
         screen.fill(blue_color)
 

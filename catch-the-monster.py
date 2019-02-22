@@ -51,15 +51,27 @@ class Hero:
         self.x += self.key_direction_x
         self.y += self.key_direction_y
 
-    def confine_to_bushes(self, width, height):
-        if self.x >= (width - 60):
-            self.x = (width - 60)
-        if self.y >= (height - 60):
-            self.y = (height - 60)
-        if self.x <= 30:
-            self.x = 30
-        if self.y <= 30:
-            self.y = 30
+    def confine_to_bushes(self, width, height, pic_and_pixels, pic_size):
+        if self.x >= (width - pic_and_pixels):
+            self.x = (width - pic_and_pixels)
+        if self.y >= (height - pic_and_pixels):
+            self.y = (height - pic_and_pixels)
+        if self.x <= pic_size:
+            self.x = pic_size
+        if self.y <= pic_size:
+            self.y = pic_size
+
+    def collision(self, player2):
+        if player2.x + 32 < self.x:
+            return False
+        elif self.x + 32 < player2.x:
+            return False
+        elif player2.y + 32 < self.y:
+            return False
+        elif self.y + 32 < player2.y:
+            return False
+        else: 
+            return True
 
     def render(self, screen):
         screen.blit(self.image, (self.x, self.y))
@@ -78,6 +90,7 @@ def main():
     
     # Game initialization
 
+
     stop_game = False
 
     while not stop_game:
@@ -94,7 +107,7 @@ def main():
 
         for event in pygame.event.get():
         # Hero movement from keyboard keys
-    
+
             if event.type == pygame.KEYDOWN:
                 if event.key == KEY_DOWN:
                     hero.key_direction_y = 4
@@ -117,11 +130,15 @@ def main():
             if event.type == pygame.QUIT:
                 stop_game = True
 
+    
+
         # Game logic
         monster.move_and_loop(width, height)
         monster.determine_new_direction()
         hero.move_position()
-        hero.confine_to_bushes(width, height)
+        hero.confine_to_bushes(width, height, 62, 32)
+        if hero.collision(monster):
+            print("collision!")
 
         # Game display
         screen.blit(background_image, (0,0))

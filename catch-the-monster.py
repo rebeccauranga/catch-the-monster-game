@@ -1,26 +1,55 @@
 import pygame
 import random
 
+class Monster:
+    def __init__(self, image_path, x, y, change_dir_countdown, change_direction, x_dir, y_dir):
+        self.image = pygame.image.load(image_path).convert_alpha()
+        self.x = x
+        self.y = y
+        self.change_dir_countdown = change_dir_countdown
+        self.change_direction = change_direction
+        self.x_dir = x_dir
+        self.y_dir = y_dir
+
+    def move_and_loop(self, width, height):
+        if self.x > width:
+            self.x = 0
+        if self.y > height:
+            self.y = 0
+        if self.x < 0:
+            self.x = width
+        if self.y < 0:
+            self.y = width
+
+    def determine_new_direction(self):
+        self.change_dir_countdown -= 1
+        if self.change_dir_countdown == 0:
+            self.change_dir_countdown = 120
+            self.change_direction = random.randint(0,3)
+        if self.change_direction == 0:
+            self.x += self.x_dir
+        elif self.change_direction == 1:
+            self.y += self.y_dir
+        elif self.change_direction == 2:
+            self.x -= self.x_dir
+        elif self.change_direction == 3:
+            self.y -= self.y_dir
+    
+    def render(self, screen):
+        screen.blit(self.image, (self.x, self.y))
+
+
 def main():
     width = 512
     height = 480
-    blue_color = (97, 159, 182)
-
-    monster_x = 100
-    monster_y = 100
 
     pygame.init()
     screen = pygame.display.set_mode((width, height))
     pygame.display.set_caption('Catch The Monster!')
     clock = pygame.time.Clock()
+    monster = Monster('images/monster.png', 100, 100, 120, 1, 3, 3)
     background_image = pygame.image.load('images/background.png').convert_alpha()
     hero_image = pygame.image.load('images/hero.png').convert_alpha()
-    monster_image = pygame.image.load('images/monster.png').convert_alpha()
-    change_dir_countdown = 120
-    change_direction = 1
-    x_dir = 3
-    y_dir = 3
-
 
     # Game initialization
 
@@ -34,42 +63,15 @@ def main():
                 stop_game = True
 
         # Game logic
-        # monster_x += 5
-        # monster_y += 5
-        # monster_x -= 5
-        # monster_y -= 5
+        
+            monster.move_and_loop(width, height)
+            monster.determine_new_direction()
 
-        if monster_x > width:
-            monster_x = 0
-        if monster_y > height:
-            monster_y = 0
-        if monster_x < 0:
-            monster_x = width
-        if monster_y < 0:
-            monster_y = width
-
-        change_dir_countdown -= 1
-        if change_dir_countdown == 0:
-            change_dir_countdown = 120
-            change_direction = random.randint(0,3)
-            print(change_direction)
-        if change_direction == 0:
-            monster_x += x_dir
-        elif change_direction == 1:
-            monster_y += y_dir
-        elif change_direction == 2:
-            monster_x -= x_dir
-        elif change_direction == 3:
-            monster_y -= y_dir
-
-        # Draw background
-        screen.fill(blue_color)
 
         # Game display
-
         screen.blit(background_image, (0,0))
         screen.blit(hero_image, (250,235))
-        screen.blit(monster_image, (monster_x, monster_y))
+        monster.render(screen)
         pygame.display.update()
         clock.tick(60)
 

@@ -1,80 +1,16 @@
 import pygame
 import random
 
+from hero import Hero
+from monster import Monster
+
 KEY_UP = 273
 KEY_DOWN = 274
 KEY_LEFT = 276
 KEY_RIGHT = 275
 
-class Monster:
-    def __init__(self, image_path, x, y):
-        self.image = pygame.image.load(image_path).convert_alpha()
-        self.x = x
-        self.y = y
-        self.countdown_number = 15
-        self.change_direction = 1
-        self.x_dir = 7
-        self.y_dir = 7
 
-    def move_and_loop(self, width, height):
-        self.x += self.x_dir  
-        self.y += self.y_dir
-        self.x -= self.x_dir  
-        self.y -= self.y_dir
 
-    def determine_new_direction(self):
-        self.countdown_number -= 1
-        if self.countdown_number == 0:
-            self.countdown_number = 15
-            self.change_direction = random.randint(0,3)
-        if self.change_direction == 0:
-            self.x += self.x_dir
-        elif self.change_direction == 1:
-            self.y += self.y_dir
-        elif self.change_direction == 2:
-            self.x -= self.x_dir
-        elif self.change_direction == 3:
-            self.y -= self.y_dir
-    
-    def render(self, screen):
-        screen.blit(self.image, (self.x, self.y))
-
-class Hero: 
-    def __init__(self, image_path, x, y):
-        self.image = pygame.image.load(image_path).convert_alpha()
-        self.x = x
-        self.y = y
-        self.key_direction_x = 0
-        self.key_direction_y = 0
-
-    def move_position(self):
-        self.x += self.key_direction_x
-        self.y += self.key_direction_y
-
-    def confine_to_bushes(self, width, height, pic_and_pixels, pic_size):
-        if self.x >= (width - pic_and_pixels):
-            self.x = (width - pic_and_pixels)
-        if self.y >= (height - pic_and_pixels):
-            self.y = (height - pic_and_pixels)
-        if self.x <= pic_size:
-            self.x = pic_size
-        if self.y <= pic_size:
-            self.y = pic_size
-
-    def collision(self, player2):
-        if player2.x + 32 < self.x:
-            return False
-        elif self.x + 32 < player2.x:
-            return False
-        elif player2.y + 32 < self.y:
-            return False
-        elif self.y + 32 < player2.y:
-            return False
-        else: 
-            return True
-
-    def render(self, screen):
-        screen.blit(self.image, (self.x, self.y))
 
 def main():
     width = 512
@@ -84,18 +20,23 @@ def main():
     screen = pygame.display.set_mode((width, height))
     pygame.display.set_caption('Catch The Monster!')
     clock = pygame.time.Clock()
+
     monster = Monster('images/monster.png', 100, 100)
-    background_image = pygame.image.load('images/background.png').convert_alpha()
     hero = Hero('images/hero.png', 255, 235)
+    background_image = pygame.image.load('images/background.png').convert_alpha()
     
     # Game initialization
-
 
     stop_game = False
 
     while not stop_game:
 
         # Monster Movement 
+        """
+         move this logic into a method of the monster class
+         and call that method here
+
+        """
         if monster.x > width:
             monster.x = 0
         if monster.y > height:
@@ -104,6 +45,7 @@ def main():
             monster.x = width
         if monster.y < 0:
             monster.y = height
+
 
         for event in pygame.event.get():
         # Hero movement from keyboard keys
@@ -130,14 +72,13 @@ def main():
             if event.type == pygame.QUIT:
                 stop_game = True
 
-    
 
         # Game logic
         monster.move_and_loop(width, height)
         monster.determine_new_direction()
         hero.move_position()
         hero.confine_to_bushes(width, height, 62, 32)
-        if hero.collision(monster):
+        if hero.collision(32, monster):
             print("collision!")
 
         # Game display

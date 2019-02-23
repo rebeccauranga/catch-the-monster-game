@@ -1,11 +1,10 @@
 import pygame
 import random
+from character import Character
 
-class Monster:
+class Monster(Character):
     def __init__(self, image_path, x, y):
-        self.image = pygame.image.load(image_path).convert_alpha()
-        self.x = x
-        self.y = y
+        super().__init__(image_path, x, y)
         self.countdown_number = 15
         self.change_direction = 1
         self.x_dir = 7
@@ -30,6 +29,14 @@ class Monster:
             self.x -= self.x_dir
         elif self.change_direction == 3:
             self.y -= self.y_dir
+
+    def return_to_screen(self, width, height):
+        if self.x > width:
+            self.x = 0
+        if self.y > height:
+            self.y = 0
+        if self.x < 0:
+            self.x = width
+        if self.y < 0:
+            self.y = height
     
-    def render(self, screen):
-        screen.blit(self.image, (self.x, self.y))

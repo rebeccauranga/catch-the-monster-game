@@ -1,11 +1,9 @@
 import pygame
+from character import Character
 
-class Hero: 
-
+class Hero(Character): 
     def __init__(self, image_path, x, y):
-        self.image = pygame.image.load(image_path).convert_alpha()
-        self.x = x
-        self.y = y
+        super().__init__(image_path, x, y)
         self.key_direction_x = 0
         self.key_direction_y = 0
 
@@ -35,6 +33,4 @@ class Hero:
         else: 
             return True
 
-    def render(self, screen):
-        screen.blit(self.image, (self.x, self.y))
 

@@ -8,3 +8,5 @@ class Character:
 
     def render(self, screen):
         screen.blit(self.image, (self.x, self.y))
+
+    

@@ -2,17 +2,16 @@ import pygame
 import random
 from character import Character
 
-class Monster(Character):
+class Goblin(Character):
     def __init__(self, image_path, x, y):
         super().__init__(image_path, x, y)
-        self.countdown_number = 15
+        self.countdown_number = 30
         self.change_direction = 1
-        self.x_dir = 7
-        self.y_dir = 7
+        self.x_dir = 5
+        self.y_dir = 5
         self.dead = False
 
-    def offscreen_monster(self):
-        self.alive_and_move = True
+    def offscreen_goblin(self):
         self.x = 800
         self.y = 800
 
@@ -25,7 +24,7 @@ class Monster(Character):
     def determine_new_direction(self):
         self.countdown_number -= 1
         if self.countdown_number == 0:
-            self.countdown_number = 15
+            self.countdown_number = 30
             self.change_direction = random.randint(0, 3)
         if self.change_direction == 0:
             self.x += self.x_dir

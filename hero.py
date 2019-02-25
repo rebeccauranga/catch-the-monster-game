@@ -6,6 +6,7 @@ class Hero(Character):
         super().__init__(image_path, x, y)
         self.key_direction_x = 0
         self.key_direction_y = 0
+        self.dead = False
 
     def move_position(self):
         self.x += self.key_direction_x

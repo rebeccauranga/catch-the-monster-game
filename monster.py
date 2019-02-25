@@ -9,6 +9,7 @@ class Monster(Character):
         self.change_direction = 1
         self.x_dir = 7
         self.y_dir = 7
+        self.dead = False
 
     def move_and_loop(self, width, height):
         self.x += self.x_dir  

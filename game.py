@@ -11,6 +11,7 @@ class Game:
         pygame.display.set_caption('Catch The Monster!')
         self.screen = pygame.display.set_mode((width, height))
         self.clock = pygame.time.Clock()
+        self.sound = pygame.mixer.Sound('sounds/win.wav')
         self.hero = Hero('images/hero.png', 255, 235)
         self.monster = Monster('images/monster.png', 100, 100)
         self.background_image = pygame.image.load('images/background.png').convert_alpha()
@@ -27,14 +28,17 @@ class Game:
             self.hero.move_position()
             self.hero.confine_to_bushes(width, height, 62, 32)
             if self.hero.collision(32, self.monster):
+                self.sound.play()
+                self.monster.dead = True
                 print("collision!")
 
             # Game display
             self.screen.blit(self.background_image, (0,0))
-            self.monster.render(self.screen)
+            if not self.monster.dead:
+                self.monster.render(self.screen)
             self.hero.render(self.screen)
-            pygame.display.update()
             self.clock.tick(60)
+            pygame.display.update()
 
         pygame.quit()
 

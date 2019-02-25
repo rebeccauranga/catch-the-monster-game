@@ -4,10 +4,26 @@ from monster import Monster
 
 width = 512
 height = 480
+black_color = (0, 0, 0)
 
 class Game:
     def __init__(self):
+        # pygame.init()
+        # pygame.font.init()
+        # pygame.display.set_caption('Catch The Monster!')
+        # self.screen = pygame.display.set_mode((width, height))
+        # self.clock = pygame.time.Clock()
+        # self.sound = pygame.mixer.Sound('sounds/win.wav')
+        # self.hero = Hero('images/hero.png', 255, 235)
+        # self.monster = Monster('images/monster.png', 100, 100)
+        # self.background_image = pygame.image.load('images/background.png').convert_alpha()
+        self.wins = 0
+        self.init_new_game()
+        # self.game_over = False
+
+    def init_new_game(self):
         pygame.init()
+        pygame.font.init()
         pygame.display.set_caption('Catch The Monster!')
         self.screen = pygame.display.set_mode((width, height))
         self.clock = pygame.time.Clock()
@@ -27,16 +43,22 @@ class Game:
             self.monster.determine_new_direction()
             self.hero.move_position()
             self.hero.confine_to_bushes(width, height, 62, 32)
-            if self.hero.collision(32, self.monster):
+
+            if not self.monster.dead and self.hero.collision(32, self.monster):
                 self.sound.play()
                 self.monster.dead = True
                 print("collision!")
 
             # Game display
             self.screen.blit(self.background_image, (0,0))
+            self.hero.render(self.screen)
             if not self.monster.dead:
                 self.monster.render(self.screen)
-            self.hero.render(self.screen)
+            else:
+                font = pygame.font.Font(None, 25)
+                text = font.render('You win! Press ENTER to play again.', True, (0, 0, 0))
+                self.screen.blit(text, (200, 230))
+                
             self.clock.tick(60)
             pygame.display.update()
 
@@ -57,6 +79,11 @@ class Game:
                 self.hero.key_direction_x = -4
             elif event.key == KEY_RIGHT:
                 self.hero.key_direction_x = 4
+            elif event.key == pygame.K_RETURN:
+                print('enter works')
+                self.wins += 1
+                self.init_new_game()
+                
         elif event.type == pygame.KEYUP:
             if event.key == KEY_DOWN:
                 self.hero.key_direction_y = 0
@@ -66,6 +93,7 @@ class Game:
                 self.hero.key_direction_x = 0
             elif event.key == KEY_RIGHT:
                 self.hero.key_direction_x = 0
+
 
         if event.type == pygame.QUIT:
                 self.game_over = True
